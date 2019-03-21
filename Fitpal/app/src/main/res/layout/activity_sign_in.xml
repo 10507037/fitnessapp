@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue_grey_900"
+    android:background="@drawable/bg"
     android:paddingStart="35dp"
     android:paddingEnd="35dp">
 
@@ -19,12 +19,13 @@
             android:layout_alignParentStart="true"
             android:baselineAligned="false">
 
+
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/logo_small_round"
-                android:tint="@color/green_300" />
+                android:src="@drawable/icon"
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -35,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:text="Email"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:textColor="@color/blue_grey_500"
+
                 android:textStyle="bold" />
 
             <android.support.design.widget.TextInputEditText
@@ -47,7 +48,7 @@
                 android:maxLines="1"
                 android:id="@+id/email_ed_login"
                 android:singleLine="true"
-                android:textColor="@color/blue_grey_300"
+
                 />
 
             <View
@@ -59,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:text="Password"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                android:textColor="@color/blue_grey_500"
+
                 android:textStyle="bold" />
 
             <android.support.design.widget.TextInputEditText
@@ -72,7 +73,7 @@
                 android:maxLines="1"
                 android:id="@+id/password_ed_login"
                 android:singleLine="true"
-                android:textColor="@color/blue_grey_300" />
+            />
 
             <View
                 android:layout_width="match_parent"
@@ -88,7 +89,7 @@
                 android:onClick="forgotPasswordClick"
                 android:text="Forgot Password?"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                android:textColor="@color/blue_grey_400"
+
                 android:textStyle="bold" />
 
             <View
@@ -103,9 +104,10 @@
                 android:layout_marginRight="-4dp"
                 android:background="@drawable/btn_rounded_green_300"
                 android:text="Login"
+                android:textColor="#fff"
                 android:onClick="loginTrainer"
                 android:textAllCaps="false"
-                android:textColor="@color/blue_grey_900" />
+              />
 
             <View
                 android:layout_width="match_parent"
@@ -124,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:text="New user? "
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/blue_grey_300" />
+                  />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -133,7 +135,7 @@
                     android:text="Sign Up"
                     android:onClick="gotoSignUp"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/green_300"
+
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -146,7 +148,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:indeterminate="true"
-            android:indeterminateTint="@color/green_400"
+            android:indeterminateTint="@color/colorPrimary"
             android:visibility="gone"
             android:id="@+id/progressBarLogin"
             />

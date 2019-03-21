@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.gymtrainer.trainerapp.Activities.EditProfileActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        app:titleTextColor="#fff"
+        android:id="@+id/toolbarEditProfile">
+    </android.support.v7.widget.Toolbar>
+
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbarEditProfile"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:id="@+id/emailTrainer"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/emailTrainer"
+        android:hint="Name"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:id="@+id/nameTrainer"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/nameTrainer"
+        android:hint="Cell Number"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:id="@+id/cellnumberTrainer"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cellnumberTrainer"
+        android:hint="Address"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:id="@+id/addressTrainer"
+        />
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/addressTrainer"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:id="@+id/cityTrainer"
+        android:hint="City"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cityTrainer"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:id="@+id/categoriesTxtView"
+        android:textSize="16sp"
+        />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/categoriesTxtView"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:id="@+id/workingHrsTxtView"
+        android:textSize="16sp"
+        />
+
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/workingHrsTxtView"
+        android:id="@+id/firstLine"
+        android:background="#D3D3D3">
+    </View>
+
+
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/firstLine"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:background="@color/colorPrimary"
+        android:textColor="#fff"
+        android:text="UPDATE"
+        android:id="@+id/buttonUpdate"
+        android:textStyle="bold"
+        />
+
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:id="@+id/progressBarEditProfile"
+        />
+
+
+
+</RelativeLayout>
