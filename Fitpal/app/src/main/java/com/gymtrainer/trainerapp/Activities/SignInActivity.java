@@ -108,6 +108,7 @@ public class SignInActivity extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                                 Toast.makeText(getApplicationContext(),"Logged in...",Toast.LENGTH_LONG).show();
                                 Intent intent=new Intent(SignInActivity.this,HomeActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                                 startActivity(intent);
                                 finish();
                             }

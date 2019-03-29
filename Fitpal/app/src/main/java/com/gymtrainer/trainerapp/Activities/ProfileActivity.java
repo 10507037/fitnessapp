@@ -51,7 +51,7 @@ public class ProfileActivity extends AppCompatActivity {
     DatabaseReference databaseReferenceTrainers;
     DatabaseReference databaseReferenceCategories,databaseReferenceWorkingHrs;
     Button logOutbutton;
-
+    Trainer trainer;
     Uri resultUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +115,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists())
                     {
-                        Trainer trainer = dataSnapshot.getValue(Trainer.class);
+                         trainer = dataSnapshot.getValue(Trainer.class);
                         if(trainer!=null)
                         {
                             textViewName.setText(trainer.getName());
@@ -173,15 +173,23 @@ public class ProfileActivity extends AppCompatActivity {
         else if(item.getItemId() == com.gymtrainer.trainerapp.R.id.menuEdit)
         {
             Intent i = new Intent(ProfileActivity.this,EditProfileActivity.class);
-            i.putExtra("name",textViewName.getText().toString());
-            i.putExtra("email",textViewEmail.getText().toString());
-            i.putExtra("cellnumber",textViewCellNumber.getText().toString());
-            i.putExtra("address",textViewAddress.getText().toString());
-            i.putExtra("city",textViewCity.getText().toString());
-            i.putStringArrayListExtra("categoriesList",arrayListCategories);
-            i.putStringArrayListExtra("workinghrs",arrayListWorkingHrs);
-            startActivity(i);
-            finish();
+            if(trainer!=null)
+            {
+                i.putExtra("trainerObj",trainer);
+                i.putStringArrayListExtra("categoriesList",arrayListCategories);
+                i.putStringArrayListExtra("workinghrs",arrayListWorkingHrs);
+                startActivity(i);
+                finish();
+            }
+            else
+            {
+                Toast.makeText(getApplicationContext(),"Could not fetch user profile.",Toast.LENGTH_LONG).show();
+            }
+
+
+
+
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -192,6 +200,7 @@ public class ProfileActivity extends AppCompatActivity {
         {
             auth.signOut();
             Intent i = new Intent(ProfileActivity.this,SignInActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(i);
             finish();
         }

@@ -506,26 +506,21 @@ public class RegisterActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        Toast.makeText(getApplicationContext(),""+databaseError.getMessage(),Toast.LENGTH_LONG).show();
                 }
             });
         }
 
 
 
-
-
         gotoHomeScreen();
-
-
-
-
 
     }
 
     private void gotoHomeScreen()
     {
         Intent i = new Intent(RegisterActivity.this,HomeActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(i);
         finish();
     }
@@ -536,9 +531,6 @@ public class RegisterActivity extends AppCompatActivity {
         TrainerId trainerId = new TrainerId(firebaseUser.getUid());
         databaseReferenceCategories.child(key).child("TrainerId").push().setValue(trainerId);
     }
-
-
-
 
     public void gotoLogin()
     {

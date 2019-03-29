@@ -1,21 +1,24 @@
-package com.gymtrainer.trainerapp;
+package com.gymtrainer.trainerapp.Activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
-import com.gymtrainer.trainerapp.Activities.SignInActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashActivity extends AppCompatActivity {
 
     protected boolean _active = true;
     protected int _splashTime = 1000;
+    FirebaseAuth auth;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(com.gymtrainer.trainerapp.R.layout.activity_splash);
+        auth = FirebaseAuth.getInstance();
+
         runThread();
 
     }
@@ -37,8 +40,18 @@ public class SplashActivity extends AppCompatActivity {
                 } catch (Exception e) {
 
                 } finally {
+
+                    if(auth.getCurrentUser()==null)
+                    {
                         startActivity(new Intent(SplashActivity.this, SignInActivity.class));
                         finish();
+                    }
+                    else
+                    {
+                        startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+                        finish();
+                    }
+
                 }
             };
         };

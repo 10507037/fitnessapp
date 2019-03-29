@@ -1,16 +1,19 @@
 package com.gymtrainer.trainerapp.Models;
 
+import java.io.Serializable;
+
 /**
  * Created by haroonpc on 3/13/2019.
  */
 
-public class Trainer
+public class Trainer implements Serializable
 {
     public Trainer(){};
 
-    public String name,email,phonenumber,address,city,gender,trailtraining,experience,about;
+    public String name,email,phonenumber,address,city,gender,trailtraining,experience,about,rate,imageUrl,trainerid;
 
-    public Trainer(String name, String email, String phonenumber, String address, String city, String gender, String trailtraining, String experience, String about) {
+    public Trainer(String name, String email, String phonenumber, String address, String city, String gender, String trailtraining,
+                   String experience, String about,String rate,String imageUrl,String trainerid) {
         this.name = name;
         this.email = email;
         this.phonenumber = phonenumber;
@@ -20,6 +23,43 @@ public class Trainer
         this.trailtraining = trailtraining;
         this.experience = experience;
         this.about = about;
+        this.rate = rate;
+        this.trainerid = trainerid;
+        this.imageUrl = imageUrl;
+
+
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getTrainerid() {
+        return trainerid;
+    }
+
+    public void setTrainerid(String trainerid) {
+        this.trainerid = trainerid;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
     }
 
     public String getName() {

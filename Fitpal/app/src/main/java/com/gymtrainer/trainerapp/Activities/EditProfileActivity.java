@@ -4,17 +4,21 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,43 +27,114 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.gymtrainer.trainerapp.Models.Category;
+import com.gymtrainer.trainerapp.Models.Trainer;
+import com.gymtrainer.trainerapp.Models.WorkingHrs;
+import com.gymtrainer.trainerapp.Utils.Constants;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    String[] listCategoryItems,listHoursItems;
-    boolean[] checkedCategoryItems,checkedHourItems;
     Toolbar toolbar;
-    EditText email_ed,name_ed,cellnumber_ed,address_ed,city_ed;
-    String email,name,cellnumber,address,city;
-    ArrayList<String> categoriesList;
+    TextInputEditText email_ed,name_ed,cellnumber_ed,address_ed,city_ed,about_ed,experience_ed;
+    String email,name,cellnumber,address,city,about,experience;
+    ArrayList<String> trainerCategoryListDb;
     ProgressBar progressBarEditProfile;
     Button buttonUpdate;
     FirebaseAuth auth;
     FirebaseUser firebaseUser;
-
+    Trainer trainer;
     TextView textViewCategories,textViewWorkingHrs;
-    ArrayList<Integer> mCategoryItem = new ArrayList<>();
-    List<String> selectedCategoriesList,selectedHoursList;
+
     DatabaseReference databaseReferenceCategories,databaseReferenceTrainers,databaseReferenceWorkingHrs;
 
-    ArrayList<String> allcategoryLIST,workingHrsListTrainer;
-    ArrayList<Integer> mHourItem = new ArrayList<>();
+    ArrayList<String> workingHrsListTrainer;
+
+    RadioGroup radioGroupGender;
+    RadioButton radioGenderButton;
+    ArrayList<Category> categoriesList = new ArrayList<>();
+    ArrayList<WorkingHrs> workingHrsList = new ArrayList<>();
+
+    String[] hourItemNew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.gymtrainer.trainerapp.R.layout.activity_edit_profile);
         init();
-
         setListeners();
-
-
         getIntentData();
-
+        getAllCategories();
         setData();
+
+    }
+
+    private void getAllCategories() {
+        databaseReferenceCategories.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot dss:dataSnapshot.getChildren())
+                {
+                    Category category = dss.getValue(Category.class);
+                    if(trainerCategoryListDb.contains(category.getCategoryName()))
+                        category.setSelected(true);
+                        categoriesList.add(category);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getApplicationContext(),""+databaseError.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void init()
+    {
+        workingHrsList = Constants.getHoursList();
+        radioGroupGender = (RadioGroup)findViewById(com.gymtrainer.trainerapp.R.id.radioGroupGender);
+        toolbar = (Toolbar)findViewById(com.gymtrainer.trainerapp.R.id.toolbarEditProfile);
+        toolbar.setTitle("Edit Profile");
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
+
+        trainerCategoryListDb = new ArrayList<>();
+        workingHrsListTrainer = new ArrayList<>();
+
+
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
+
+        buttonUpdate = (Button)findViewById(com.gymtrainer.trainerapp.R.id.buttonUpdate);
+        hourItemNew = Constants.hourItems;
+
+
+
+
+
+
+        databaseReferenceCategories = FirebaseDatabase.getInstance().getReference().child("Categories");
+        databaseReferenceTrainers = FirebaseDatabase.getInstance().getReference().child("Users").child("Trainers").child(firebaseUser.getUid());
+        databaseReferenceWorkingHrs = FirebaseDatabase.getInstance().getReference().child("Users").child("Trainers").child(firebaseUser.getUid()).child("WorkingHrs");
+
+
+        email_ed = findViewById(com.gymtrainer.trainerapp.R.id.edEmail);
+        name_ed = findViewById(com.gymtrainer.trainerapp.R.id.edName);
+        cellnumber_ed = findViewById(com.gymtrainer.trainerapp.R.id.edPhoneNumber);
+        address_ed = findViewById(com.gymtrainer.trainerapp.R.id.edAddress);
+        textViewWorkingHrs = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.workingHrsTxtView);
+
+        city_ed = findViewById(com.gymtrainer.trainerapp.R.id.edCity);
+        about_ed = findViewById(com.gymtrainer.trainerapp.R.id.edAbout);
+        experience_ed = findViewById(com.gymtrainer.trainerapp.R.id.edExperience);
+        progressBarEditProfile = (ProgressBar)findViewById(com.gymtrainer.trainerapp.R.id.progressBarEditProfile);
+        textViewCategories = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.categoriesTxtView);
 
     }
 
@@ -75,7 +150,8 @@ public class EditProfileActivity extends AppCompatActivity {
         textViewWorkingHrs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkedHourItems = new boolean[listHoursItems.length];
+
+             //   Toast.makeText(getApplicationContext(),"You cannot change your working hours right now. Work is going on.",Toast.LENGTH_LONG).show();
                 displayDialogWorkingHrs();
             }
         });
@@ -83,320 +159,40 @@ public class EditProfileActivity extends AppCompatActivity {
         textViewCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                databaseReferenceCategories.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        allcategoryLIST.clear();
-
-                        for(DataSnapshot dss:dataSnapshot.getChildren())
-                        {
-                            Category category = dss.getValue(Category.class);
-                            allcategoryLIST.add(category.getCategoryName());
-                        }
-
-                        listCategoryItems = new String[allcategoryLIST.size()];
-                        for (int i = 0; i < allcategoryLIST.size(); i++)
-                        {      // convert array list to string array
-                            listCategoryItems[i] = allcategoryLIST.get(i);
-                        }
-
-                        checkedCategoryItems = new boolean[listCategoryItems.length];
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
                 displayDialogCategories();
 
-
-
             }
         });
     }
 
-    private void init()
+
+
+    private void getIntentData()
     {
-        toolbar = (Toolbar)findViewById(com.gymtrainer.trainerapp.R.id.toolbarEditProfile);
-        toolbar.setTitle("Edit Profile");
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
-
-
-        categoriesList = new ArrayList<>();
-        workingHrsListTrainer = new ArrayList<>();
-        listHoursItems = new String[]{"8 AM","9 AM","10 AM","11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM"};
-        allcategoryLIST = new ArrayList<>();
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
-
-        buttonUpdate = (Button)findViewById(com.gymtrainer.trainerapp.R.id.buttonUpdate);
-
-        databaseReferenceCategories = FirebaseDatabase.getInstance().getReference().child("Categories");
-        databaseReferenceTrainers = FirebaseDatabase.getInstance().getReference().child("Users").child("Trainers").child(firebaseUser.getUid());
-        databaseReferenceWorkingHrs = FirebaseDatabase.getInstance().getReference().child("Users").child("Trainers").child(firebaseUser.getUid()).child("WorkingHrs");
-
-
-        email_ed = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.emailTrainer);
-        name_ed = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.nameTrainer);
-        cellnumber_ed = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.cellnumberTrainer);
-        address_ed = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.addressTrainer);
-        textViewWorkingHrs = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.workingHrsTxtView);
-        selectedCategoriesList = new ArrayList<>();
-        selectedHoursList = new ArrayList<>();
-        city_ed = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.cityTrainer);
-        progressBarEditProfile = (ProgressBar)findViewById(com.gymtrainer.trainerapp.R.id.progressBarEditProfile);
-        textViewCategories = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.categoriesTxtView);
-    }
-
-    private void displayDialogWorkingHrs()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
-        builder.setTitle("Choose Working Hours");
-        builder.setMultiChoiceItems(listHoursItems, checkedHourItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if(isChecked) {
-                    if (!mHourItem.contains(which)) {
-                        mHourItem.add(which);
-                    }
-                }
-                else {
-                    mHourItem.remove((Integer)which);
-                }
-            }
-        });
-
-        builder.setCancelable(false);
-        builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String item = "";
-
-                for(int i=0;i< mHourItem.size();i++)
-                {
-
-                    item = item + listHoursItems[mHourItem.get(i)];
-
-                    if(i!=mHourItem.size() - 1)
-                    {
-
-                        item = item + ", ";
-                    }
-                }
-
-                if(item.equals(""))
-                {
-                    textViewWorkingHrs.setText("Choose your available hours");
-                }
-                else
-                {
-                    selectedHoursList.clear();
-                    textViewWorkingHrs.setText(item);
-
-                    for(int i=0;i<mHourItem.size();i++)
-                    {
-                        selectedHoursList.add(listHoursItems[mHourItem.get(i)]);
-                    }
-
-                }
-
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-
-            }
-        });
-
-        builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                for(int i=0;i<checkedHourItems.length;i++)
-                {
-                    checkedHourItems[i] = false;
-                    mHourItem.clear();
-                    selectedHoursList.clear();
-                    textViewWorkingHrs.setText("Choose your available hours");
-                }
-            }
-        });
-
-        AlertDialog mDialog = builder.create();
-        mDialog.show();
-    }
-
-    private void updateProfile()
-    {
-        if(name_ed.getText().toString().equals(""))
+        if(getIntent()!=null)
         {
-            Toast.makeText(getApplicationContext(),"Name cannot be blank",Toast.LENGTH_LONG).show();
-        }
-
-        if(cellnumber_ed.getText().toString().equals(""))
-        {
-            Toast.makeText(EditProfileActivity.this, "Phone number cannot be blank", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if(address_ed.getText().toString().equals(""))
-        {
-            Toast.makeText(EditProfileActivity.this, "Address cannot be blank", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(city_ed.getText().toString().equals(""))
-        {
-            Toast.makeText(EditProfileActivity.this, "City cannot be blank", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if(selectedCategoriesList.size()==0)
-        {
-            Toast.makeText(EditProfileActivity.this, "You must select atleast one category", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if(selectedHoursList.size() == 0)
-        {
-            Toast.makeText(EditProfileActivity.this, "You must select atleast one hour", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        else
-        {
-
-            updateTrainer();
-
+            trainer = (Trainer)getIntent().getSerializableExtra("trainerObj");
+            trainerCategoryListDb = getIntent().getStringArrayListExtra("categoriesList");
+            workingHrsListTrainer = getIntent().getStringArrayListExtra("workinghrs");
         }
     }
-
-    private void updateTrainer()
-    {
-        databaseReferenceTrainers.child("name").setValue(name_ed.getText().toString());
-        databaseReferenceTrainers.child("phonenumber").setValue(cellnumber_ed.getText().toString());
-        databaseReferenceTrainers.child("address").setValue(address_ed.getText().toString());
-        databaseReferenceTrainers.child("city").setValue(city_ed.getText().toString());
-
-        if(selectedCategoriesList.size()>0 && selectedHoursList.size()>0)
-        {
-            databaseReferenceTrainers.child("Categories").setValue(selectedCategoriesList);
-            databaseReferenceTrainers.child("WorkingHrs").setValue(selectedHoursList);
-        }
-
-        else
-        {
-            databaseReferenceTrainers.child("Categories").setValue(categoriesList);
-            databaseReferenceTrainers.child("WorkingHrs").setValue(workingHrsListTrainer);
-        }
-
-        Toast.makeText(getApplicationContext(),"User profile updated successfully",Toast.LENGTH_LONG).show();
-        finish();
-        Intent i = new Intent(EditProfileActivity.this,ProfileActivity.class);
-        startActivity(i);
-
-
-    }
-
-    private void displayDialogCategories()
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
-        builder.setTitle("Choose categories");
-        builder.setMultiChoiceItems(listCategoryItems, checkedCategoryItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if(isChecked) {
-                    if (!mCategoryItem.contains(which)) {
-                        mCategoryItem.add(which);
-                    }
-                }
-                else if(mCategoryItem.contains(which)){
-                    mCategoryItem.remove((Integer)which);
-                }
-            }
-        });
-
-        builder.setCancelable(false);
-        builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String item = "";
-                for(int i=0;i< mCategoryItem.size();i++)
-                {
-                    item = item + listCategoryItems[mCategoryItem.get(i)];
-                    if(i!=mCategoryItem.size() - 1)
-                    {
-                        item = item + ", ";
-                    }
-                }
-
-                if(item.equals(""))
-                {
-                    textViewCategories.setText("Choose categories");
-                }
-                else
-                {
-                    textViewCategories.setText(item);
-
-                    selectedCategoriesList.clear();
-
-                    for(int i=0;i<mCategoryItem.size();i++)
-                    {
-                        selectedCategoriesList.add(listCategoryItems[mCategoryItem.get(i)]);
-                    }
-
-
-
-                }
-
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-
-            }
-        });
-
-        builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                for(int i=0;i<checkedCategoryItems.length;i++)
-                {
-                    checkedCategoryItems[i] = false;
-                    mCategoryItem.clear();
-                    selectedCategoriesList.clear();
-                    textViewCategories.setText("Choose categories");
-                }
-            }
-        });
-
-        AlertDialog mDialog = builder.create();
-        mDialog.show();
-    }
-
     private void setData()
     {
-        email_ed.setText(email);
+
+
+        email_ed.setText(trainer.getEmail());
         email_ed.setEnabled(false);
-        name_ed.setText(name);
-        cellnumber_ed.setText(cellnumber);
-        address_ed.setText(address);
-        city_ed.setText(city);
+        name_ed.setText(trainer.getName());
+        cellnumber_ed.setText(trainer.getPhonenumber());
+        address_ed.setText(trainer.getAddress());
+        city_ed.setText(trainer.getCity());
+        about_ed.setText(trainer.getAbout());
+        experience_ed.setText(trainer.getExperience());
 
         StringBuilder stringBuilder = new StringBuilder();
-        for(int i=0;i<categoriesList.size();i++)
+        for(int i=0;i<trainerCategoryListDb.size();i++)
         {
-            stringBuilder.append(categoriesList.get(i)+ ",");
+            stringBuilder.append(trainerCategoryListDb.get(i)+ ",");
         }
 
 
@@ -422,24 +218,284 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
-    private void getIntentData()
+
+
+
+    private void updateProfile()
     {
-            if(getIntent()!=null)
+        if(name_ed.getText().toString().equals(""))
+        {
+            Toast.makeText(getApplicationContext(),"Name cannot be blank",Toast.LENGTH_LONG).show();
+        }
+
+        if(cellnumber_ed.getText().toString().equals(""))
+        {
+            Toast.makeText(EditProfileActivity.this, "Phone number cannot be blank", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(address_ed.getText().toString().equals(""))
+        {
+            Toast.makeText(EditProfileActivity.this, "Address cannot be blank", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(city_ed.getText().toString().equals(""))
+        {
+            Toast.makeText(EditProfileActivity.this, "City cannot be blank", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(categoriesList.size()==0)
+        {
+            Toast.makeText(EditProfileActivity.this, "You must select atleast one category", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+//        if(selectedHoursList.size() == 0)
+//        {
+//            Toast.makeText(EditProfileActivity.this, "You must select atleast one hour", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+        else
+        {
+
+
+            updateTrainer();
+
+        }
+    }
+    
+
+    private void displayDialogWorkingHrs()
+    {
+
+        final boolean[] itemHourSelected = new boolean[workingHrsList.size()];
+
+        for(int i=0;i<workingHrsList.size();i++)
+        {
+            if(workingHrsListTrainer.contains(workingHrsList.get(i).getHourName()))
             {
-                email = getIntent().getStringExtra("email");
-                name = getIntent().getStringExtra("name");
-                cellnumber = getIntent().getStringExtra("cellnumber");
-                address = getIntent().getStringExtra("address");
-                city = getIntent().getStringExtra("city");
-                categoriesList = getIntent().getStringArrayListExtra("categoriesList");
-                workingHrsListTrainer = getIntent().getStringArrayListExtra("workinghrs");
+//                WorkingHrs workingHrs = new WorkingHrs(Constants.getHoursList().get(i).getHourName(),Constants.getHoursList().get(i).isSelected());
+//                workingHrs.setSelected(true);
+//                workingHrsList.add(new WorkingHrs( Constants.getHoursList().get(i).getHourName(), Constants.getHoursList().get(i).isSelected()));
+                workingHrsList.get(i).setSelected(true);
             }
+        }
+
+
+        for(int i=0;i<workingHrsList.size();i++)
+        {
+            itemHourSelected[i] = workingHrsList.get(i).isSelected();
+        }
+
+
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
+        builder.setTitle("Choose Working Hours");
+        builder.setMultiChoiceItems(Constants.hourItems, itemHourSelected, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                    itemHourSelected[which] = isChecked;
+            }
+        });
+
+        builder.setCancelable(false);
+        builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                for(int i=0; i<itemHourSelected.length;i++){
+                    workingHrsList.get(i).setSelected(itemHourSelected[i]);
+                }
+
+                if(workingHrsList.size()==0)
+                {
+                    textViewWorkingHrs.setText("Choose Working Hours");
+                }
+
+                String workText = "";
+
+                for (WorkingHrs workingHrs:workingHrsList)
+                {
+                    if(workingHrs.isSelected()){
+//                        textViewCategories.setText(cat.getCategoryName());
+                        if(workText.equals("")) {
+                            workText = workingHrs.getHourName();
+                        }else {
+                            workText = workText + "," + workingHrs.getHourName();
+                        }
+                    }
+                }
+
+                textViewWorkingHrs.setText(workText);
+
+
+
+
+
+
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+
+        builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                workingHrsList.clear();
+                    textViewWorkingHrs.setText("Choose your available hours");
+
+            }
+        });
+
+        AlertDialog mDialog = builder.create();
+        mDialog.show();
+    }
+
+    private void displayDialogCategories()
+    {
+
+        String[] itemsName = new String[categoriesList.size()];
+        final boolean[] itemsSelected = new boolean[categoriesList.size()];
+
+        for(int i=0;i<categoriesList.size();i++)
+        {
+            itemsName[i] = categoriesList.get(i).getCategoryName();
+            itemsSelected[i]= categoriesList.get(i).isSelected();
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
+        builder.setTitle("Choose categories");
+        builder.setMultiChoiceItems(itemsName, itemsSelected, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                itemsSelected[which] = isChecked;
+            }
+        });
+
+        builder.setCancelable(false);
+        builder.setPositiveButton("Select", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+
+                for(int i=0; i<itemsSelected.length;i++){
+                    categoriesList.get(i).setSelected(itemsSelected[i]);
+                }
+
+                if(categoriesList.size()==0)
+                {
+                    textViewCategories.setText("Choose categories");
+                }
+
+
+                String catText = "";
+                for (Category cat:categoriesList)
+                {
+                    if(cat.isSelected()){
+//                        textViewCategories.setText(cat.getCategoryName());
+                        if(catText.equals("")) {
+                            catText = cat.getCategoryName();
+                        }else {
+                            catText = catText + "," + cat.getCategoryName();
+                        }
+                    }
+                }
+
+                textViewCategories.setText(catText);
+
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNeutralButton("Clear All", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                categoriesList.clear();
+                    textViewCategories.setText("Choose categories");
+
+            }
+        });
+
+        AlertDialog mDialog = builder.create();
+        mDialog.show();
+    }
+
+    private void updateTrainer()
+    {
+        int selectedId = radioGroupGender.getCheckedRadioButtonId();
+        radioGenderButton = (RadioButton) findViewById(selectedId);
+
+        databaseReferenceTrainers.child("name").setValue(name_ed.getText().toString());
+        databaseReferenceTrainers.child("phonenumber").setValue(cellnumber_ed.getText().toString());
+        databaseReferenceTrainers.child("address").setValue(address_ed.getText().toString());
+        databaseReferenceTrainers.child("city").setValue(city_ed.getText().toString());
+        databaseReferenceTrainers.child("gender").setValue(radioGenderButton.getText().toString());
+        databaseReferenceTrainers.child("about").setValue(about_ed.getText().toString());
+        databaseReferenceTrainers.child("experience").setValue(experience_ed.getText().toString());
+
+      //  databaseReferenceTrainers.child("WorkingHrs").setValue(selectedHoursList);
+
+
+        ArrayList<String> categoryNames = new ArrayList<>();
+        ArrayList<String> hourNamesList = new ArrayList<>();
+        for(int i=0;i<categoriesList.size();i++)
+        {
+            if(categoriesList.get(i).isSelected())
+            {
+                categoryNames.add(categoriesList.get(i).getCategoryName());
+            }
+        }
+
+        for(WorkingHrs workingHrs:workingHrsList)
+        {
+            if(workingHrs.isSelected())
+            {
+                hourNamesList.add(workingHrs.getHourName());
+            }
+        }
+
+        databaseReferenceTrainers.child("Categories").setValue(categoryNames);
+        databaseReferenceTrainers.child("WorkingHrs").setValue(hourNamesList)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful())
+                            {
+                                Toast.makeText(getApplicationContext(),"User profile updated successfully",Toast.LENGTH_LONG).show();
+                                finish();
+                                Intent i = new Intent(EditProfileActivity.this,ProfileActivity.class);
+                                startActivity(i);
+                            }
+                    }
+                });
+
+
+
+
+
+
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()== android.R.id.home) {
             finish();
+            Intent i = new Intent(EditProfileActivity.this,ProfileActivity.class);
+            startActivity(i);
         }
         return super.onOptionsItemSelected(item);
     }
