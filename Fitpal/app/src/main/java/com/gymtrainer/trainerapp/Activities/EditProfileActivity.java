@@ -2,15 +2,17 @@ package com.gymtrainer.trainerapp.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -29,9 +31,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.gymtrainer.trainerapp.Models.Category;
 import com.gymtrainer.trainerapp.Models.Trainer;
 import com.gymtrainer.trainerapp.Models.WorkingHrs;
+import com.gymtrainer.trainerapp.R;
 import com.gymtrainer.trainerapp.Utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class EditProfileActivity extends AppCompatActivity {
 
@@ -60,7 +65,7 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.gymtrainer.trainerapp.R.layout.activity_edit_profile);
+        setContentView(R.layout.activity_edit_profile);
         init();
         setListeners();
         getIntentData();
@@ -94,8 +99,8 @@ public class EditProfileActivity extends AppCompatActivity {
     private void init()
     {
         workingHrsList = Constants.getHoursList();
-        radioGroupGender = (RadioGroup)findViewById(com.gymtrainer.trainerapp.R.id.radioGroupGender);
-        toolbar = (Toolbar)findViewById(com.gymtrainer.trainerapp.R.id.toolbarEditProfile);
+        radioGroupGender = (RadioGroup)findViewById(R.id.radioGroupGender);
+        toolbar = (Toolbar)findViewById(R.id.toolbarEditProfile);
         toolbar.setTitle("Edit Profile");
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){
@@ -111,7 +116,7 @@ public class EditProfileActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
 
-        buttonUpdate = (Button)findViewById(com.gymtrainer.trainerapp.R.id.buttonUpdate);
+        buttonUpdate = (Button)findViewById(R.id.buttonUpdate);
         hourItemNew = Constants.hourItems;
 
 
@@ -124,17 +129,17 @@ public class EditProfileActivity extends AppCompatActivity {
         databaseReferenceWorkingHrs = FirebaseDatabase.getInstance().getReference().child("Users").child("Trainers").child(firebaseUser.getUid()).child("WorkingHrs");
 
 
-        email_ed = findViewById(com.gymtrainer.trainerapp.R.id.edEmail);
-        name_ed = findViewById(com.gymtrainer.trainerapp.R.id.edName);
-        cellnumber_ed = findViewById(com.gymtrainer.trainerapp.R.id.edPhoneNumber);
-        address_ed = findViewById(com.gymtrainer.trainerapp.R.id.edAddress);
-        textViewWorkingHrs = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.workingHrsTxtView);
+        email_ed = findViewById(R.id.edEmail);
+        name_ed = findViewById(R.id.edName);
+        cellnumber_ed = findViewById(R.id.edPhoneNumber);
+        address_ed = findViewById(R.id.edAddress);
+        textViewWorkingHrs = (TextView)findViewById(R.id.workingHrsTxtView);
 
-        city_ed = findViewById(com.gymtrainer.trainerapp.R.id.edCity);
-        about_ed = findViewById(com.gymtrainer.trainerapp.R.id.edAbout);
-        experience_ed = findViewById(com.gymtrainer.trainerapp.R.id.edExperience);
-        progressBarEditProfile = (ProgressBar)findViewById(com.gymtrainer.trainerapp.R.id.progressBarEditProfile);
-        textViewCategories = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.categoriesTxtView);
+        city_ed = findViewById(R.id.edCity);
+        about_ed = findViewById(R.id.edAbout);
+        experience_ed = findViewById(R.id.edExperience);
+        progressBarEditProfile = (ProgressBar)findViewById(R.id.progressBarEditProfile);
+        textViewCategories = (TextView)findViewById(R.id.categoriesTxtView);
 
     }
 

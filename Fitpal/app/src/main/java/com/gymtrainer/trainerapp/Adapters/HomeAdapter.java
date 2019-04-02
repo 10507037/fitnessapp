@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.gymtrainer.trainerapp.Models.Category;
+import com.gymtrainer.trainerapp.R;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeAdapterVie
 
     @Override
     public HomeAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(com.gymtrainer.trainerapp.R.layout.item_home,parent,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_home,parent,false);
         return new HomeAdapterViewHolder(view);
 
     }
@@ -54,9 +55,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeAdapterVie
 
         public HomeAdapterViewHolder(View itemView) {
             super(itemView);
-            textViewName = (TextView)itemView.findViewById(com.gymtrainer.trainerapp.R.id.nameTxt);
-            textViewCategory = (TextView)itemView.findViewById(com.gymtrainer.trainerapp.R.id.categoryNameTxt);
-            textViewTime = (TextView)itemView.findViewById(com.gymtrainer.trainerapp.R.id.hourTxt);
+            textViewName = (TextView)itemView.findViewById(R.id.nameTxt);
+            textViewCategory = (TextView)itemView.findViewById(R.id.categoryNameTxt);
+            textViewTime = (TextView)itemView.findViewById(R.id.hourTxt);
         }
     }
 }

@@ -2,10 +2,11 @@ package com.gymtrainer.trainerapp.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,8 +34,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.gymtrainer.trainerapp.Models.Category;
 import com.gymtrainer.trainerapp.Models.Trainer;
 import com.gymtrainer.trainerapp.Models.TrainerId;
+import com.gymtrainer.trainerapp.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -82,7 +87,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.gymtrainer.trainerapp.R.layout.activity_register);
+        setContentView(R.layout.activity_register);
         initControls();
 
 
@@ -94,32 +99,32 @@ public class RegisterActivity extends AppCompatActivity {
         categoryLIST = new ArrayList<>();
       //  listCategoryItems = new String[]{"ABC","DEF","GHI","JKL","MNO"};
         listHoursItems = new String[]{"8 AM","9 AM","10 AM","11 AM","12 PM","01 PM","02 PM","03 PM","04 PM","05 PM"};
-        registerButton = (Button)findViewById(com.gymtrainer.trainerapp.R.id.registerButton);
-        textViewLogin = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.goToLogin);
+        registerButton = (Button)findViewById(R.id.registerButton);
+        textViewLogin = (TextView)findViewById(R.id.goToLogin);
         selectedHoursList = new ArrayList<>();
         selectedCategoriesList = new ArrayList<>();
-        progressBar = (ProgressBar)findViewById(com.gymtrainer.trainerapp.R.id.progressBarRegister);
-        checkBoxTrail = (CheckBox)findViewById(com.gymtrainer.trainerapp.R.id.checkboxTrail);
+        progressBar = (ProgressBar)findViewById(R.id.progressBarRegister);
+        checkBoxTrail = (CheckBox)findViewById(R.id.checkboxTrail);
         categoriesList = new ArrayList<>();
 
         auth = FirebaseAuth.getInstance();
 
         databaseReferenceTrainer = FirebaseDatabase.getInstance().getReference().child("Users").child("Trainers");
         databaseReferenceCategories = FirebaseDatabase.getInstance().getReference().child("Categories");
-        textViewCategorySelect = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.textViewCategorySelect);
-        textViewHourSelect = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.edHours);
-        radioGroupGender = (RadioGroup)findViewById(com.gymtrainer.trainerapp.R.id.radioGroupGender);
+        textViewCategorySelect = (TextView)findViewById(R.id.textViewCategorySelect);
+        textViewHourSelect = (TextView)findViewById(R.id.edHours);
+        radioGroupGender = (RadioGroup)findViewById(R.id.radioGroupGender);
 
-        ed_name = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.edName);
-        ed_email = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.edEmail);
-        ed_password = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.edPassword);
-        ed_confirmpassword = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.edConfirmPassword);
-        ed_phonenumber = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.edPhoneNumber);
-        ed_address = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.edAddress);
-        ed_hour_rate = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.edRatePerHour);
-        ed_city = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.edCity);
-        ed_experience = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.edExperience);
-        ed_about = (EditText)findViewById(com.gymtrainer.trainerapp.R.id.edAbout);
+        ed_name = (EditText)findViewById(R.id.edName);
+        ed_email = (EditText)findViewById(R.id.edEmail);
+        ed_password = (EditText)findViewById(R.id.edPassword);
+        ed_confirmpassword = (EditText)findViewById(R.id.edConfirmPassword);
+        ed_phonenumber = (EditText)findViewById(R.id.edPhoneNumber);
+        ed_address = (EditText)findViewById(R.id.edAddress);
+        ed_hour_rate = (EditText)findViewById(R.id.edRatePerHour);
+        ed_city = (EditText)findViewById(R.id.edCity);
+        ed_experience = (EditText)findViewById(R.id.edExperience);
+        ed_about = (EditText)findViewById(R.id.edAbout);
 
 
 

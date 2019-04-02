@@ -2,11 +2,11 @@ package com.gymtrainer.trainerapp.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.gymtrainer.trainerapp.R;
 
 
 public class SignInActivity extends AppCompatActivity {
@@ -29,11 +30,11 @@ public class SignInActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.gymtrainer.trainerapp.R.layout.activity_sign_in);
-        editTextEmail = (TextInputEditText) findViewById(com.gymtrainer.trainerapp.R.id.email_ed_login);
-        editTextPassword = (TextInputEditText) findViewById(com.gymtrainer.trainerapp.R.id.password_ed_login);
+        setContentView(R.layout.activity_sign_in);
+        editTextEmail = (TextInputEditText) findViewById(R.id.email_ed_login);
+        editTextPassword = (TextInputEditText) findViewById(R.id.password_ed_login);
         auth = FirebaseAuth.getInstance();
-        progressBar = (ProgressBar)findViewById(com.gymtrainer.trainerapp.R.id.progressBarLogin);
+        progressBar = (ProgressBar)findViewById(R.id.progressBarLogin);
 
     }
 

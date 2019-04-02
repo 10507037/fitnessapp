@@ -1,12 +1,14 @@
 package com.gymtrainer.trainerapp.Activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -30,6 +32,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.gymtrainer.trainerapp.Models.Trainer;
+import com.gymtrainer.trainerapp.R;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -56,8 +59,8 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.gymtrainer.trainerapp.R.layout.activity_profile);
-        toolbar = (Toolbar)findViewById(com.gymtrainer.trainerapp.R.id.toolbarProfile);
+        setContentView(R.layout.activity_profile);
+        toolbar = (Toolbar)findViewById(R.id.toolbarProfile);
         toolbar.setTitle("Profile");
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){
@@ -65,23 +68,23 @@ public class ProfileActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        textViewName = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.nameTrainerTxt);
-        textViewEmail = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.emailTrainerTxt);
-        logOutbutton = (Button)findViewById(com.gymtrainer.trainerapp.R.id.buttonLogout);
+        textViewName = (TextView)findViewById(R.id.nameTrainerTxt);
+        textViewEmail = (TextView)findViewById(R.id.emailTrainerTxt);
+        logOutbutton = (Button)findViewById(R.id.buttonLogout);
         logOutbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 logout();
             }
         });
-        textViewCellNumber = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.cellNumberTrainerTxt);
-        textViewAddress = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.addressTrainerTxt);
-        textViewCity = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.cityTrainerTxt);
-        textViewGender = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.genderTrainerTxt);
-        trainerImgView = (CircleImageView)findViewById(com.gymtrainer.trainerapp.R.id.trainerImgView);
-        textViewCategories = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.categoriesTrainerTxt);
-        textViewWorkingHrs = (TextView)findViewById(com.gymtrainer.trainerapp.R.id.workingHrsTrainerTxt);
-        progressBar  = (ProgressBar)findViewById(com.gymtrainer.trainerapp.R.id.progressBarProfile);
+        textViewCellNumber = (TextView)findViewById(R.id.cellNumberTrainerTxt);
+        textViewAddress = (TextView)findViewById(R.id.addressTrainerTxt);
+        textViewCity = (TextView)findViewById(R.id.cityTrainerTxt);
+        textViewGender = (TextView)findViewById(R.id.genderTrainerTxt);
+        trainerImgView = (CircleImageView)findViewById(R.id.trainerImgView);
+        textViewCategories = (TextView)findViewById(R.id.categoriesTrainerTxt);
+        textViewWorkingHrs = (TextView)findViewById(R.id.workingHrsTrainerTxt);
+        progressBar  = (ProgressBar)findViewById(R.id.progressBarProfile);
         arrayListCategories = new ArrayList<>();
         arrayListWorkingHrs = new ArrayList<>();
 
@@ -124,7 +127,7 @@ public class ProfileActivity extends AppCompatActivity {
                             textViewAddress.setText(trainer.getAddress());
                             textViewGender.setText(trainer.getGender());
                             textViewCity.setText(trainer.getCity());
-                            Picasso.get().load(trainer.getImageUrl()).placeholder(com.gymtrainer.trainerapp.R.drawable.ic_launcher_man).into(trainerImgView);
+                            Picasso.get().load(trainer.getImageUrl()).placeholder(R.drawable.ic_launcher_man).into(trainerImgView);
 
                             databaseReferenceCategories = FirebaseDatabase.getInstance().getReference().child("Users")
                                     .child("Trainers").child(trainer.getTrainerid()).child("Categories");
@@ -160,7 +163,7 @@ public class ProfileActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(com.gymtrainer.trainerapp.R.menu.editmenu, menu);
+        inflater.inflate(R.menu.editmenu, menu);
         return true;
     }
 
@@ -170,7 +173,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             finish();
         }
-        else if(item.getItemId() == com.gymtrainer.trainerapp.R.id.menuEdit)
+        else if(item.getItemId() == R.id.menuEdit)
         {
             Intent i = new Intent(ProfileActivity.this,EditProfileActivity.class);
             if(trainer!=null)
