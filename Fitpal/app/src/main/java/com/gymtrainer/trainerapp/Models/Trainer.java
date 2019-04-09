@@ -10,10 +10,10 @@ public class Trainer implements Serializable
 {
     public Trainer(){};
 
-    public String name,email,phonenumber,address,city,gender,trailtraining,experience,about,rate,imageUrl,trainerid;
+    public String name,email,phonenumber,address,city,gender,trailtraining,experience,about,rate,imageUrl,trainerid,lat,lng;
 
     public Trainer(String name, String email, String phonenumber, String address, String city, String gender, String trailtraining,
-                   String experience, String about,String rate,String imageUrl,String trainerid) {
+                   String experience, String about,String rate,String imageUrl,String trainerid,String lat,String lng) {
         this.name = name;
         this.email = email;
         this.phonenumber = phonenumber;
@@ -26,8 +26,25 @@ public class Trainer implements Serializable
         this.rate = rate;
         this.trainerid = trainerid;
         this.imageUrl = imageUrl;
+        this.lat = lat;
+        this.lng = lng;
 
+    }
 
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
     public String getImageUrl() {

@@ -1,8 +1,10 @@
 package com.gymtrainer.trainerapp.Activities;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,10 +21,16 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.gymtrainer.trainerapp.R;
 
+import java.util.List;
 
-public class SignInActivity extends AppCompatActivity {
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
+
+
+public class SignInActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks{
     TextInputEditText editTextEmail, editTextPassword;
     FirebaseAuth auth;
     ProgressBar progressBar;
@@ -31,11 +39,23 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        init();
+
+
+    }
+
+    private void init()
+    {
         editTextEmail = (TextInputEditText) findViewById(R.id.email_ed_login);
         editTextPassword = (TextInputEditText) findViewById(R.id.password_ed_login);
         auth = FirebaseAuth.getInstance();
         progressBar = (ProgressBar)findViewById(R.id.progressBarLogin);
+        String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
+        if(!EasyPermissions.hasPermissions(this,perms))
+        {
+            EasyPermissions.requestPermissions(this,"We need Location permission.",123,perms);
 
+        }
     }
 
     public void forgotPasswordClick(View v) {
@@ -97,6 +117,9 @@ public class SignInActivity extends AppCompatActivity {
         String email = editTextEmail.getText().toString();
         String password = editTextPassword.getText().toString();
 
+
+
+
         if(!email.equals("")&& !password.equals(""))
         {
             auth.signInWithEmailAndPassword(email,password)
@@ -106,12 +129,27 @@ public class SignInActivity extends AppCompatActivity {
                             if(task.isSuccessful())
                             {
                                 //   FirebaseUser user = auth.getCurrentUser();
-                                progressBar.setVisibility(View.GONE);
-                                Toast.makeText(getApplicationContext(),"Logged in...",Toast.LENGTH_LONG).show();
-                                Intent intent=new Intent(SignInActivity.this,HomeActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                startActivity(intent);
-                                finish();
+
+                                FirebaseUser firebaseUser = auth.getCurrentUser();
+                                if(firebaseUser.isEmailVerified())
+                                {
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(getApplicationContext(),"Logged in...",Toast.LENGTH_LONG).show();
+                                    Intent intent=new Intent(SignInActivity.this,HomeActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                                else
+                                {
+                                    Toast.makeText(getApplicationContext(),"Your email is not verified yet. Please verify it first",Toast.LENGTH_LONG).show();
+                                    FirebaseAuth.getInstance().signOut();
+                                    progressBar.setVisibility(View.GONE);
+                                    recreate();
+
+                                }
+
+
                             }
                             else
                             {
@@ -133,7 +171,6 @@ public class SignInActivity extends AppCompatActivity {
     {
                 Intent i = new Intent(SignInActivity.this,RegisterActivity.class);
                 startActivity(i);
-
     }
 
     public static boolean isValidEmail(CharSequence target){
@@ -145,4 +182,30 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode,permissions,grantResults,this);
+
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+            if(EasyPermissions.somePermissionPermanentlyDenied(this,perms))
+            {
+                new AppSettingsDialog.Builder(this).build().show();
+
+            }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
 }

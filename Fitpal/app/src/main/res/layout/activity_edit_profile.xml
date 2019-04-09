@@ -268,18 +268,22 @@
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                         android:textStyle="bold" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"></View>
 
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="-4dp"
+                        android:textSize="16sp"
                         android:id="@+id/categoriesTxtView"
                         />
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="10dp"></View>
+                        android:layout_height="7dp"></View>
 
 
 
@@ -291,18 +295,22 @@
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                         android:textStyle="bold" />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"></View>
 
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="-4dp"
+                        android:textSize="16sp"
                         android:id="@+id/workingHrsTxtView"
                         />
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="10dp"></View>
+                        android:layout_height="15dp"></View>
 
 
                     <Button

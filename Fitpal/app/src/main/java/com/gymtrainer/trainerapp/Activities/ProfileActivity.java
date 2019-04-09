@@ -60,6 +60,79 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        init();
+        setListeners();
+
+
+    }
+
+    private void setListeners()
+    {
+        trainerImgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhotoIntent, 14);
+            }
+        });
+
+
+
+        trainerImgView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhotoIntent, 14);
+            }
+        });
+
+
+        databaseReferenceTrainers.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists())
+                {
+                    trainer = dataSnapshot.getValue(Trainer.class);
+                    if(trainer!=null)
+                    {
+                        textViewName.setText(trainer.getName());
+                        textViewEmail.setText(trainer.getEmail());
+                        textViewCellNumber.setText(trainer.getPhonenumber());
+                        textViewAddress.setText(trainer.getAddress());
+                        textViewGender.setText(trainer.getGender());
+                        textViewCity.setText(trainer.getCity());
+                        Picasso.get().load(trainer.getImageUrl()).placeholder(R.drawable.ic_launcher_man).into(trainerImgView);
+
+                        databaseReferenceCategories = FirebaseDatabase.getInstance().getReference().child("Users")
+                                .child("Trainers").child(trainer.getTrainerid()).child("Categories");
+
+                        databaseReferenceWorkingHrs = FirebaseDatabase.getInstance().getReference().child("Users")
+                                .child("Trainers").child(trainer.getTrainerid()).child("WorkingHrs");
+
+                        fetchCategories();
+                        fetchWorkingHrs();
+
+
+                        progressBar.setVisibility(View.GONE);
+                    }
+                }
+                else
+                {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(getApplicationContext(),"Could not fetch profile due to network error. Try again.",Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getApplicationContext(),"Could not fetch profile due to network error. Try again.",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void init()
+    {
         toolbar = (Toolbar)findViewById(R.id.toolbarProfile);
         toolbar.setTitle("Profile");
         setSupportActionBar(toolbar);
@@ -67,7 +140,8 @@ public class ProfileActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
+        auth = FirebaseAuth.getInstance();
+        firebaseUser = auth.getCurrentUser();
         textViewName = (TextView)findViewById(R.id.nameTrainerTxt);
         textViewEmail = (TextView)findViewById(R.id.emailTrainerTxt);
         logOutbutton = (Button)findViewById(R.id.buttonLogout);
@@ -88,73 +162,8 @@ public class ProfileActivity extends AppCompatActivity {
         arrayListCategories = new ArrayList<>();
         arrayListWorkingHrs = new ArrayList<>();
 
-
-
-        trainerImgView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhotoIntent, 14);
-            }
-        });
-
-        auth = FirebaseAuth.getInstance();
-        firebaseUser = auth.getCurrentUser();
         firebaseStorageReference = FirebaseStorage.getInstance().getReference().child("TrainerProfileImages");
         databaseReferenceTrainers = FirebaseDatabase.getInstance().getReference().child("Users").child("Trainers").child(firebaseUser.getUid());
-
-
-        trainerImgView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhotoIntent, 14);
-            }
-        });
-
-
-        databaseReferenceTrainers.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists())
-                    {
-                         trainer = dataSnapshot.getValue(Trainer.class);
-                        if(trainer!=null)
-                        {
-                            textViewName.setText(trainer.getName());
-                            textViewEmail.setText(trainer.getEmail());
-                            textViewCellNumber.setText(trainer.getPhonenumber());
-                            textViewAddress.setText(trainer.getAddress());
-                            textViewGender.setText(trainer.getGender());
-                            textViewCity.setText(trainer.getCity());
-                            Picasso.get().load(trainer.getImageUrl()).placeholder(R.drawable.ic_launcher_man).into(trainerImgView);
-
-                            databaseReferenceCategories = FirebaseDatabase.getInstance().getReference().child("Users")
-                                    .child("Trainers").child(trainer.getTrainerid()).child("Categories");
-
-                            databaseReferenceWorkingHrs = FirebaseDatabase.getInstance().getReference().child("Users")
-                                    .child("Trainers").child(trainer.getTrainerid()).child("WorkingHrs");
-
-                            fetchCategories();
-                            fetchWorkingHrs();
-
-
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }
-                    else
-                    {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(getApplicationContext(),"Could not fetch profile due to network error. Try again.",Toast.LENGTH_LONG).show();
-                    }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(),"Could not fetch profile due to network error. Try again.",Toast.LENGTH_LONG).show();
-            }
-        });
 
 
     }
@@ -170,7 +179,6 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()== android.R.id.home) {
-
             finish();
         }
         else if(item.getItemId() == R.id.menuEdit)
@@ -203,7 +211,7 @@ public class ProfileActivity extends AppCompatActivity {
         {
             auth.signOut();
             Intent i = new Intent(ProfileActivity.this,SignInActivity.class);
-            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
             finish();
         }

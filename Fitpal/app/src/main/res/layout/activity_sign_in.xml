@@ -46,8 +46,9 @@
                 android:layout_marginRight="-4dp"
                 android:maxLength="50"
                 android:maxLines="1"
+                android:inputType="textEmailAddress"
                 android:id="@+id/email_ed_login"
-                android:singleLine="true"
+
 
                 />
 

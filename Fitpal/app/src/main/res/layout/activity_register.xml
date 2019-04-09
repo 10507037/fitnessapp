@@ -156,7 +156,7 @@
                 android:layout_marginRight="-4dp"
                 android:maxLines="1"
                 android:text="0"
-                android:inputType="text"
+                android:inputType="number"
                 android:id="@+id/edPhoneNumber"
             />
 
@@ -265,7 +265,6 @@ android:text="0"
                 android:layout_height="wrap_content"
                 android:text="Select Categories"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-
                 android:textStyle="bold" />
 
 
@@ -431,7 +430,6 @@ android:text="0"
                 android:layout_marginRight="-4dp"
                 android:inputType="number"
                 android:text="0"
-
                 android:maxLines="5"
                 android:id="@+id/edRatePerHour"
              />
@@ -440,6 +438,30 @@ android:text="0"
                 android:layout_width="match_parent"
                 android:layout_height="10dp" />
 
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fetch Current Location"
+                android:layout_marginRight="-4dp"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="-4dp"
+                android:text="Fetch Location"
+                android:id="@+id/edLocation"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
 
             <Button
                 android:layout_width="match_parent"

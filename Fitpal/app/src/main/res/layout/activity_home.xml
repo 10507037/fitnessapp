@@ -15,13 +15,30 @@
         app:titleTextColor="#fff"
         android:elevation="4dp"
         >
-
-
-
     </android.support.v7.widget.Toolbar>
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recyclerViewHome"
-        android:layout_below="@+id/toolbarHome"></android.support.v7.widget.RecyclerView>
+        android:layout_below="@+id/toolbarHome">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/progressBarHiredUsers"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textSize="16sp"
+        android:id="@+id/notfoundTxt"
+        android:text="You are not hired by any user yet."
+        android:gravity="center"
+        android:visibility="gone"
+        />
 </RelativeLayout>

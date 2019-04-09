@@ -42,7 +42,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     TextInputEditText email_ed,name_ed,cellnumber_ed,address_ed,city_ed,about_ed,experience_ed;
-    String email,name,cellnumber,address,city,about,experience;
+
     ArrayList<String> trainerCategoryListDb;
     ProgressBar progressBarEditProfile;
     Button buttonUpdate;
@@ -313,12 +313,13 @@ public class EditProfileActivity extends AppCompatActivity {
                     workingHrsList.get(i).setSelected(itemHourSelected[i]);
                 }
 
-                if(workingHrsList.size()==0)
+                if(itemHourSelected.length==0)
                 {
                     textViewWorkingHrs.setText("Choose Working Hours");
                 }
 
                 String workText = "";
+                workingHrsListTrainer.clear();
 
                 for (WorkingHrs workingHrs:workingHrsList)
                 {
@@ -329,15 +330,11 @@ public class EditProfileActivity extends AppCompatActivity {
                         }else {
                             workText = workText + "," + workingHrs.getHourName();
                         }
+                        workingHrsListTrainer.add(workingHrs.getHourName());
                     }
                 }
 
                 textViewWorkingHrs.setText(workText);
-
-
-
-
-
 
             }
         });
