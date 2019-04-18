@@ -31,7 +31,7 @@
 
             <com.makeramen.roundedimageview.RoundedImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/hiredUsersImg"
+                android:id="@+id/imageView_product"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:src="@drawable/icon"
@@ -49,6 +49,7 @@
 
         <android.support.constraint.ConstraintLayout
             xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imageView_material1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/_6sdp"
@@ -60,22 +61,22 @@
             <TextView
                 android:id="@+id/hiredUserName"
                 android:layout_width="match_parent"
-                android:layout_height="16dp"
+                android:layout_height="wrap_content"
+                android:text="Aceme"
+                android:textSize="@dimen/_12sdp"
+                android:textColor="@color/colorRed"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text=""
-                android:textSize="@dimen/_12sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-
-                />
+                app:layout_constraintTop_toTopOf="parent"/>
 
             <TextView
-                android:id="@+id/hiredUsersCategoryName"
+                android:id="@+id/textView_productRating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-               
+                android:text="Arobic Training"
+                android:textColor="@color/colorRed"
                 android:textSize="@dimen/_10sdp"
                 android:ellipsize="end"
                 android:maxLines="1"
@@ -98,19 +99,18 @@
             >
 
             <TextView
-                android:id="@+id/hiredUserRate"
+                android:id="@+id/textView_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="45$"
-                android:gravity="center"
+                android:text="Rs 3000"
+                android:textColor="@color/colorRed"
                 android:textStyle="bold"
+                android:textSize="@dimen/_10sdp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-
-                />
+                app:layout_constraintTop_toTopOf="parent"/>
 
 
         </android.support.constraint.ConstraintLayout>

@@ -6,378 +6,389 @@
     android:layout_height="match_parent"
     tools:context="com.gymtrainer.trainerapp.Activities.ProfileActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        app:titleTextColor="#fff"
+        android:id="@+id/toolbarProfile">
 
-
+    </android.support.v7.widget.Toolbar>
 
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbarProfile">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_130sdp"
+                android:id="@+id/relativeLayoutImg"
+                android:layout_alignParentStart="true">
 
-            <android.support.v7.widget.Toolbar
+                <RelativeLayout
+                    android:layout_width="@dimen/_75sdp"
+                    android:layout_height="@dimen/_75sdp"
+                    android:layout_centerInParent="true">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_launcher_man"
+                        android:id="@+id/trainerImgView"
+                        />
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_width="@dimen/_25sdp"
+                        android:layout_height="@dimen/_25sdp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentEnd="true"
+                        android:src="@drawable/edit"
+                        app:civ_border_width="1dp"
+                        android:id="@+id/uploadBtn"
+                        />
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:elevation="4dp"
-                app:titleTextColor="#fff"
-                android:id="@+id/toolbarProfile"
-
-                ></android.support.v7.widget.Toolbar>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_130sdp"
-        android:id="@+id/relativeLayoutImg"
-        android:layout_below="@+id/toolbarProfile"
-        android:layout_alignParentStart="true">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="@dimen/_70sdp"
-            android:layout_height="@dimen/_70sdp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_launcher_man"
-            android:id="@+id/trainerImgView"
-            />
-
-    </RelativeLayout>
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/relativeLayoutImg"
-        android:layout_marginTop="5dp"
-        android:id="@+id/personalDetailsTxt"
-        android:text="Personal Details"
-        android:layout_marginStart="5dp"
-        android:textSize="16sp"
-        android:textColor="#000"
-        />
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/personalDetailsTxt"
-        android:id="@+id/LL1"
-        android:weightSum="2"
-        android:layout_marginTop="10dp"
-
-        >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="Name"
-            android:textSize="16sp"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text=""
-            android:id="@+id/nameTrainerTxt"
-            android:textSize="16sp"
-            />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/LL1"
-        android:id="@+id/LL2"
-        android:weightSum="2"
-        android:layout_marginTop="10dp"
-
-        >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="Email"
-            android:textSize="16sp"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text=""
-            android:id="@+id/emailTrainerTxt"
-            android:textSize="16sp"
-            />
-
-    </LinearLayout>
-
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/LL2"
-        android:id="@+id/LL3"
-        android:weightSum="2"
-        android:layout_marginTop="10dp"
-
-        >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="Cell Number"
-            android:textSize="16sp"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text=""
-            android:id="@+id/cellNumberTrainerTxt"
-            android:textSize="16sp"
-            />
-
-    </LinearLayout>
-
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/LL3"
-        android:id="@+id/LL4"
-        android:weightSum="2"
-        android:layout_marginTop="10dp"
-
-        >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="Gender"
-            android:textSize="16sp"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text=""
-            android:id="@+id/genderTrainerTxt"
-            android:textSize="16sp"
-            />
-
-    </LinearLayout>
-
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/LL4"
-        android:id="@+id/firstLine"
-        android:background="#D3D3D3"></View>
-
-
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/firstLine"
-        android:layout_marginTop="5dp"
-        android:id="@+id/addressDetailsTxt"
-        android:text="Address Details"
-        android:layout_marginStart="5dp"
-        android:textSize="16sp"
-        android:textColor="#000"
-        />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/addressDetailsTxt"
-        android:id="@+id/LL5"
-        android:weightSum="2"
-        android:layout_marginTop="10dp"
-
-        >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="Address"
-            android:textSize="16sp"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text=""
-            android:id="@+id/addressTrainerTxt"
-            android:textSize="16sp"
-            />
-
-    </LinearLayout>
-
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/LL5"
-        android:id="@+id/LL6"
-        android:weightSum="2"
-        android:layout_marginTop="10dp"
-
-        >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="City"
-            android:textSize="16sp"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text=""
-            android:id="@+id/cityTrainerTxt"
-            android:textSize="16sp"
-            />
-
-    </LinearLayout>
-
-
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/LL6"
-        android:id="@+id/secondLine"
-        android:background="#D3D3D3"></View>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/secondLine"
-        android:layout_marginTop="5dp"
-        android:id="@+id/TrainingDetailsTxt"
-        android:text="Training Details"
-        android:layout_marginStart="5dp"
-        android:textSize="16sp"
-        android:textColor="#000"
-        />
-
-
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/TrainingDetailsTxt"
-        android:id="@+id/LL7"
-        android:weightSum="2"
-        android:layout_marginTop="10dp"
-
-        >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="Categories"
-            android:textSize="16sp"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text=""
-            android:id="@+id/categoriesTrainerTxt"
-            android:textSize="16sp"
-            />
-
-    </LinearLayout>
-
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/LL7"
-        android:id="@+id/LL8"
-        android:weightSum="2"
-        android:layout_marginTop="10dp"
-
-        >
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="Working hrs"
-            android:textSize="16sp"
-            />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text=""
-            android:id="@+id/workingHrsTrainerTxt"
-            android:textSize="16sp"
-            />
-
-    </LinearLayout>
+                android:layout_below="@+id/relativeLayoutImg"
+                android:layout_marginTop="5dp"
+                android:id="@+id/personalDetailsTxt"
+                android:text="Personal Details"
+                android:layout_marginStart="5dp"
+                android:textSize="16sp"
+                android:textColor="#000"
+                />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/personalDetailsTxt"
+                android:id="@+id/LL1"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Name"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:id="@+id/nameTrainerTxt"
+                    android:textSize="16sp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/LL1"
+                android:id="@+id/LL2"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Email"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:id="@+id/emailTrainerTxt"
+                    android:textSize="16sp"
+                    />
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/LL2"
+                android:id="@+id/LL3"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Cell Number"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:id="@+id/cellNumberTrainerTxt"
+                    android:textSize="16sp"
+                    />
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/LL3"
+                android:id="@+id/LL4"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Gender"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:id="@+id/genderTrainerTxt"
+                    android:textSize="16sp"
+                    />
+
+            </LinearLayout>
+
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/LL4"
+                android:id="@+id/firstLine"
+                android:background="#D3D3D3"></View>
+
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/firstLine"
+                android:layout_marginTop="5dp"
+                android:id="@+id/addressDetailsTxt"
+                android:text="Address Details"
+                android:layout_marginStart="5dp"
+                android:textSize="16sp"
+                android:textColor="#000"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/addressDetailsTxt"
+                android:id="@+id/LL5"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Address"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:id="@+id/addressTrainerTxt"
+                    android:textSize="16sp"
+                    />
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/LL5"
+                android:id="@+id/LL6"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="City"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:id="@+id/cityTrainerTxt"
+                    android:textSize="16sp"
+                    />
+
+            </LinearLayout>
+
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/LL6"
+                android:id="@+id/secondLine"
+                android:background="#D3D3D3"></View>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/secondLine"
+                android:layout_marginTop="5dp"
+                android:id="@+id/TrainingDetailsTxt"
+                android:text="Training Details"
+                android:layout_marginStart="5dp"
+                android:textSize="16sp"
+                android:textColor="#000"
+                />
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/TrainingDetailsTxt"
+                android:id="@+id/LL7"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Categories"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:id="@+id/categoriesTrainerTxt"
+                    android:textSize="16sp"
+                    />
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/LL7"
+                android:id="@+id/LL8"
+                android:weightSum="2"
+                android:layout_marginTop="10dp"
+
+                >
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Working hrs"
+                    android:textSize="16sp"
+                    />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text=""
+                    android:id="@+id/workingHrsTrainerTxt"
+                    android:textSize="16sp"
+                    />
+
+            </LinearLayout>
 
 
             <Button
@@ -400,7 +411,8 @@
                 android:id="@+id/progressBarProfile"
                 />
 
-            </RelativeLayout>
+
+        </RelativeLayout>
 
     </ScrollView>
 

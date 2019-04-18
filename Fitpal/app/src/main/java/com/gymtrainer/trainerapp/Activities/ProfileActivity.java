@@ -49,7 +49,7 @@ public class ProfileActivity extends AppCompatActivity {
     ProgressBar progressBar;
     ArrayList<String> arrayListCategories,arrayListWorkingHrs;
     TextView textViewName,textViewEmail,textViewCellNumber,textViewAddress,textViewCity,textViewGender,textViewCategories,textViewWorkingHrs;
-    CircleImageView trainerImgView;
+    CircleImageView trainerImgView,uploadImgButton;
     StorageReference firebaseStorageReference;
     DatabaseReference databaseReferenceTrainers;
     DatabaseReference databaseReferenceCategories,databaseReferenceWorkingHrs;
@@ -68,7 +68,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void setListeners()
     {
-        trainerImgView.setOnClickListener(new View.OnClickListener() {
+        uploadImgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -77,14 +77,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
 
-
-        trainerImgView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhotoIntent, 14);
-            }
-        });
 
 
         databaseReferenceTrainers.addValueEventListener(new ValueEventListener() {
@@ -159,6 +151,7 @@ public class ProfileActivity extends AppCompatActivity {
         textViewCategories = (TextView)findViewById(R.id.categoriesTrainerTxt);
         textViewWorkingHrs = (TextView)findViewById(R.id.workingHrsTrainerTxt);
         progressBar  = (ProgressBar)findViewById(R.id.progressBarProfile);
+        uploadImgButton = (CircleImageView)findViewById(R.id.uploadBtn);
         arrayListCategories = new ArrayList<>();
         arrayListWorkingHrs = new ArrayList<>();
 
@@ -216,7 +209,6 @@ public class ProfileActivity extends AppCompatActivity {
             finish();
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

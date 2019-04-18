@@ -31,10 +31,10 @@
 
 
             <ImageView
-                android:layout_width="100dp"
+                android:layout_width="@dimen/_125sdp"
                 android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:src="@drawable/icon"
+                android:src="@drawable/newlogo"
                 />
 
 
@@ -57,7 +57,7 @@
                 android:layout_marginRight="-4dp"
                 android:maxLength="50"
                 android:maxLines="1"
-                android:text="Abc"
+
                 android:id="@+id/edName"
                 android:inputType="text"
 
@@ -81,7 +81,6 @@
                 android:layout_marginLeft="-4dp"
                 android:layout_marginRight="-4dp"
                 android:inputType="textEmailAddress"
-                android:text="abc@gmail.com"
                 android:maxLength="50"
                 android:id="@+id/edEmail"
                 android:maxLines="1"
@@ -106,7 +105,7 @@
                 android:layout_marginLeft="-4dp"
                 android:layout_marginRight="-4dp"
                 android:maxLines="1"
-                android:text="00000000"
+
                 android:inputType="textPassword"
                 android:id="@+id/edPassword"
            />
@@ -130,7 +129,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="-4dp"
                 android:layout_marginRight="-4dp"
-                android:text="00000000"
+
                 android:maxLines="1"
                 android:inputType="textPassword"
                 android:id="@+id/edConfirmPassword"
@@ -155,7 +154,7 @@
                 android:layout_marginLeft="-4dp"
                 android:layout_marginRight="-4dp"
                 android:maxLines="1"
-                android:text="0"
+
                 android:inputType="number"
                 android:id="@+id/edPhoneNumber"
             />
@@ -179,7 +178,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="-4dp"
                 android:layout_marginRight="-4dp"
-android:text="0"
                 android:inputType="text"
                 android:id="@+id/edAddress" />
 
@@ -203,7 +201,6 @@ android:text="0"
                 android:layout_marginLeft="-4dp"
                 android:layout_marginRight="-4dp"
                 android:maxLines="1"
-                android:text="0"
                 android:inputType="text"
                 android:id="@+id/edCity"
               />
@@ -305,7 +302,7 @@ android:text="0"
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Trail Training (3 days)"
+                        android:text="Trial Training (3 days)"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:layout_weight="1.8"
                         android:textSize="16sp"
@@ -347,7 +344,6 @@ android:text="0"
                 android:layout_marginRight="-4dp"
                 android:maxLines="1"
                 android:inputType="text"
-                android:text="0"
                 android:id="@+id/edExperience"
                 />
 
@@ -378,6 +374,7 @@ android:text="0"
                 android:layout_height="wrap_content"
                 android:text="Choose your available hours"
                 android:id="@+id/edHours"
+                android:textSize="16sp"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold"/>
 
@@ -404,7 +401,7 @@ android:text="0"
                 android:layout_marginRight="-4dp"
                 android:inputType="textMultiLine"
                 android:maxLines="7"
-                android:text="0"
+
                 android:minLines="1"
                 android:id="@+id/edAbout"
                 />
@@ -429,7 +426,7 @@ android:text="0"
                 android:layout_marginLeft="-4dp"
                 android:layout_marginRight="-4dp"
                 android:inputType="number"
-                android:text="0"
+
                 android:maxLines="5"
                 android:id="@+id/edRatePerHour"
              />

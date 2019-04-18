@@ -11,13 +11,21 @@
         android:background="@color/colorPrimary"
         android:elevation="4dp"
         app:titleTextColor="#fff"
-        android:id="@+id/toolbarHiredTrainerDetail"
+        android:id="@+id/toolbarHiredUserDetail"
 
         ></android.support.v7.widget.Toolbar>
 
 
 
 
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbarHiredUserDetail">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
     <RelativeLayout
@@ -25,22 +33,19 @@
         android:layout_height="@dimen/_145sdp"
         android:background="@drawable/profilebg"
         android:id="@+id/relativeLayoutImg"
-        android:layout_below="@+id/toolbarHiredTrainerDetail"
+
         >
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="@dimen/_70sdp"
             android:layout_height="@dimen/_70sdp"
             android:layout_centerInParent="true"
-            android:id="@+id/hiredTrainerImg"
+            android:id="@+id/hiredUserImg"
             />
 
     </RelativeLayout>
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/relativeLayoutImg">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text=""
-                android:id="@+id/hiredTrainerName"
+                android:id="@+id/hiredUserName"
                 android:textSize="16sp"
                 />
 
@@ -118,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text=""
-                android:id="@+id/hiredTrainerEmail"
+                android:id="@+id/hiredUserEmail"
                 android:textSize="16sp"
                 />
 
@@ -157,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text=""
-                android:id="@+id/hiredTrainerGender"
+                android:id="@+id/hiredUserGender"
                 android:textSize="16sp"
                 />
 
@@ -195,7 +200,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:id="@+id/hiredTrainerPhoneNumber"
+                android:id="@+id/hiredUserPhoneNumber"
                 android:textSize="16sp"
                 />
 
@@ -235,7 +240,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text=""
-                android:id="@+id/hiredTrainerAddress"
+                android:id="@+id/hiredUserAddress"
                 android:textSize="16sp"
                 />
 
@@ -274,7 +279,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:id="@+id/hiredTrainerHours"
+                android:id="@+id/hiredUserHours"
                 android:textSize="16sp"
                 />
 
@@ -314,7 +319,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:id="@+id/hiredTrainerDate"
+                android:id="@+id/hiredUserDate"
                 android:textSize="16sp"
                 />
 
@@ -354,7 +359,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:id="@+id/hiredTrainerCategory"
+                android:id="@+id/hiredUserCategory"
                 android:textSize="16sp"
                 />
 
@@ -371,6 +376,8 @@
 
 
     </LinearLayout>
+        </RelativeLayout>
+
     </android.support.v4.widget.NestedScrollView>
 
 

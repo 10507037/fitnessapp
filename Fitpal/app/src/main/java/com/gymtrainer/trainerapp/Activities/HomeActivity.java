@@ -109,14 +109,12 @@ public class HomeActivity extends AppCompatActivity {
                                     }
                                 }
                                 else {
-                                    Toast.makeText(getApplicationContext(),"Trainer is null",Toast.LENGTH_LONG).show();
+
                                     notfoundTxt.setVisibility(View.VISIBLE);
                                     progressBar.setVisibility(View.GONE);
                                 }
                             }
 
-
-                            // notify data set changed
                             hireAdapter.notifyDataSetChanged();
                             progressBar.setVisibility(View.GONE);
                         }
@@ -136,9 +134,6 @@ public class HomeActivity extends AppCompatActivity {
                 });
             }
         },3000);
-
-
-
 
     }
 
@@ -163,7 +158,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
-    public void openNewActivity(String trainerId, ArrayList<String> hourList, String categoryName, String userId, String date)
+    public void openNewActivity(ArrayList<String> hourList, String categoryName, String userId, String date)
     {
         Intent i = new Intent(HomeActivity.this,HiredUsersDetailActivity.class);
         i.putExtra("categoryName",categoryName);
