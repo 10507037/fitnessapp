@@ -9,37 +9,20 @@ import java.util.List;
 
 public class Hire
 {
-    public String userId,trainerId,categoryName,trainerName,userName,imageUrl,rate,date;
+    public String userId,trainerId,categoryName,name,imageUrl,rate,date;
     public ArrayList<String> hourList;
     public Hire(){}
 
-    public Hire(String userId, String trainerId, String categoryName,String trainerName,String userName,String imageUrl,
+    public Hire(String userId, String trainerId, String categoryName,String name,String imageUrl,
                 String rate, ArrayList<String> hourList,String date) {
         this.userId = userId;
         this.trainerId = trainerId;
         this.categoryName = categoryName;
-        this.trainerName = trainerName;
-        this.userName = userName;
+        this.name = name;
         this.imageUrl = imageUrl;
         this.rate = rate;
         this.hourList = hourList;
         this.date = date;
-    }
-
-    public String getTrainerName() {
-        return trainerName;
-    }
-
-    public void setTrainerName(String trainerName) {
-        this.trainerName = trainerName;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getDate() {
@@ -50,6 +33,13 @@ public class Hire
         this.date = date;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getImageUrl() {
         return imageUrl;

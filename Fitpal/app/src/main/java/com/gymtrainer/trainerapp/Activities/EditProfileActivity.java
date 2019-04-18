@@ -2,6 +2,7 @@ package com.gymtrainer.trainerapp.Activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -25,21 +27,21 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.gymtrainer.trainerapp.Models.Category;
 import com.gymtrainer.trainerapp.Models.Trainer;
-import com.gymtrainer.trainerapp.Models.TrainerId;
 import com.gymtrainer.trainerapp.Models.WorkingHrs;
 import com.gymtrainer.trainerapp.R;
 import com.gymtrainer.trainerapp.Utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class EditProfileActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    TextInputEditText email_ed,name_ed,cellnumber_ed,address_ed,city_ed,about_ed,experience_ed,rate_ed;
+    TextInputEditText email_ed,name_ed,cellnumber_ed,address_ed,city_ed,about_ed,experience_ed;
 
     ArrayList<String> trainerCategoryListDb;
     ProgressBar progressBarEditProfile;
@@ -51,8 +53,8 @@ public class EditProfileActivity extends AppCompatActivity {
 
     DatabaseReference databaseReferenceCategories,databaseReferenceTrainers,databaseReferenceWorkingHrs;
 
-    ArrayList<String> workingHrsListTrainerDb;
-    ArrayList<String> categoryNames = new ArrayList<>();
+    ArrayList<String> workingHrsListTrainer;
+
     RadioGroup radioGroupGender;
     RadioButton radioGenderButton;
     ArrayList<Category> categoriesList = new ArrayList<>();
@@ -72,8 +74,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     }
 
-    private void getAllCategories() {    // fetching all the categories
-
+    private void getAllCategories() {
         databaseReferenceCategories.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -97,22 +98,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void init()
     {
+        workingHrsList = Constants.getHoursList();
         radioGroupGender = (RadioGroup)findViewById(R.id.radioGroupGender);
         toolbar = (Toolbar)findViewById(R.id.toolbarEditProfile);
-        email_ed = findViewById(R.id.edEmail);
-        name_ed = findViewById(R.id.edName);
-        cellnumber_ed = findViewById(R.id.edPhoneNumber);
-        address_ed = findViewById(R.id.edAddress);
-        textViewWorkingHrs = (TextView)findViewById(R.id.workingHrsTxtView);
-        rate_ed = (TextInputEditText)findViewById(R.id.edRate);
-        city_ed = findViewById(R.id.edCity);
-        about_ed = findViewById(R.id.edAbout);
-        experience_ed = findViewById(R.id.edExperience);
-        progressBarEditProfile = (ProgressBar)findViewById(R.id.progressBarEditProfile);
-        textViewCategories = (TextView)findViewById(R.id.categoriesTxtView);
-        buttonUpdate = (Button)findViewById(R.id.buttonUpdate);
-
-        // toolbar
         toolbar.setTitle("Edit Profile");
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null){
@@ -122,16 +110,37 @@ public class EditProfileActivity extends AppCompatActivity {
 
 
         trainerCategoryListDb = new ArrayList<>();
-        workingHrsListTrainerDb = new ArrayList<>();
+        workingHrsListTrainer = new ArrayList<>();
+
+
         auth = FirebaseAuth.getInstance();
         firebaseUser = auth.getCurrentUser();
-        workingHrsList = Constants.getHoursList();
+
+        buttonUpdate = (Button)findViewById(R.id.buttonUpdate);
         hourItemNew = Constants.hourItems;
 
-        // fetching data from firebase
+
+
+
+
+
         databaseReferenceCategories = FirebaseDatabase.getInstance().getReference().child("Categories");
         databaseReferenceTrainers = FirebaseDatabase.getInstance().getReference().child("Users").child("Trainers").child(firebaseUser.getUid());
         databaseReferenceWorkingHrs = FirebaseDatabase.getInstance().getReference().child("Users").child("Trainers").child(firebaseUser.getUid()).child("WorkingHrs");
+
+
+        email_ed = findViewById(R.id.edEmail);
+        name_ed = findViewById(R.id.edName);
+        cellnumber_ed = findViewById(R.id.edPhoneNumber);
+        address_ed = findViewById(R.id.edAddress);
+        textViewWorkingHrs = (TextView)findViewById(R.id.workingHrsTxtView);
+
+        city_ed = findViewById(R.id.edCity);
+        about_ed = findViewById(R.id.edAbout);
+        experience_ed = findViewById(R.id.edExperience);
+        progressBarEditProfile = (ProgressBar)findViewById(R.id.progressBarEditProfile);
+        textViewCategories = (TextView)findViewById(R.id.categoriesTxtView);
+
     }
 
     private void setListeners()
@@ -169,15 +178,7 @@ public class EditProfileActivity extends AppCompatActivity {
         {
             trainer = (Trainer)getIntent().getSerializableExtra("trainerObj");
             trainerCategoryListDb = getIntent().getStringArrayListExtra("categoriesList");
-            workingHrsListTrainerDb = getIntent().getStringArrayListExtra("workinghrs");
-
-            for(int i=0;i<workingHrsList.size();i++)
-            {
-                if(workingHrsListTrainerDb.contains(workingHrsList.get(i).getHourName()))
-                {
-                    workingHrsList.get(i).setSelected(true);
-                }
-            }
+            workingHrsListTrainer = getIntent().getStringArrayListExtra("workinghrs");
         }
     }
     private void setData()
@@ -192,7 +193,6 @@ public class EditProfileActivity extends AppCompatActivity {
         city_ed.setText(trainer.getCity());
         about_ed.setText(trainer.getAbout());
         experience_ed.setText(trainer.getExperience());
-        rate_ed.setText(trainer.getRate());
 
         StringBuilder stringBuilder = new StringBuilder();
         for(int i=0;i<trainerCategoryListDb.size();i++)
@@ -209,9 +209,9 @@ public class EditProfileActivity extends AppCompatActivity {
 
         StringBuilder workingHrsBuilder = new StringBuilder();
 
-        for(int i = 0; i< workingHrsListTrainerDb.size(); i++)
+        for(int i=0;i<workingHrsListTrainer.size();i++)
         {
-            workingHrsBuilder.append(workingHrsListTrainerDb.get(i)+ ",");
+            workingHrsBuilder.append(workingHrsListTrainer.get(i)+ ",");
         }
 
 
@@ -219,10 +219,6 @@ public class EditProfileActivity extends AppCompatActivity {
         {
             textViewWorkingHrs.setText(workingHrsBuilder.toString());
         }
-
-     //   workingHrsList.clear();
-
-
 
 
     }
@@ -260,6 +256,11 @@ public class EditProfileActivity extends AppCompatActivity {
             return;
         }
 
+//        if(selectedHoursList.size() == 0)
+//        {
+//            Toast.makeText(EditProfileActivity.this, "You must select atleast one hour", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         else
         {
 
@@ -272,12 +273,16 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void displayDialogWorkingHrs()
     {
+
         final boolean[] itemHourSelected = new boolean[workingHrsList.size()];
 
         for(int i=0;i<workingHrsList.size();i++)
         {
-            if(workingHrsListTrainerDb.contains(workingHrsList.get(i).getHourName()))
+            if(workingHrsListTrainer.contains(workingHrsList.get(i).getHourName()))
             {
+//                WorkingHrs workingHrs = new WorkingHrs(Constants.getHoursList().get(i).getHourName(),Constants.getHoursList().get(i).isSelected());
+//                workingHrs.setSelected(true);
+//                workingHrsList.add(new WorkingHrs( Constants.getHoursList().get(i).getHourName(), Constants.getHoursList().get(i).isSelected()));
                 workingHrsList.get(i).setSelected(true);
             }
         }
@@ -314,18 +319,18 @@ public class EditProfileActivity extends AppCompatActivity {
                 }
 
                 String workText = "";
-                workingHrsListTrainerDb.clear();
+                workingHrsListTrainer.clear();
 
                 for (WorkingHrs workingHrs:workingHrsList)
                 {
                     if(workingHrs.isSelected()){
-
+//                        textViewCategories.setText(cat.getCategoryName());
                         if(workText.equals("")) {
                             workText = workingHrs.getHourName();
                         }else {
                             workText = workText + "," + workingHrs.getHourName();
                         }
-                        workingHrsListTrainerDb.add(workingHrs.getHourName());
+                        workingHrsListTrainer.add(workingHrs.getHourName());
                     }
                 }
 
@@ -441,15 +446,13 @@ public class EditProfileActivity extends AppCompatActivity {
         databaseReferenceTrainers.child("city").setValue(city_ed.getText().toString());
         databaseReferenceTrainers.child("gender").setValue(radioGenderButton.getText().toString());
         databaseReferenceTrainers.child("about").setValue(about_ed.getText().toString());
-        databaseReferenceTrainers.child("rate").setValue(rate_ed.getText().toString());
         databaseReferenceTrainers.child("experience").setValue(experience_ed.getText().toString());
 
       //  databaseReferenceTrainers.child("WorkingHrs").setValue(selectedHoursList);
 
 
-
+        ArrayList<String> categoryNames = new ArrayList<>();
         ArrayList<String> hourNamesList = new ArrayList<>();
-
         for(int i=0;i<categoriesList.size();i++)
         {
             if(categoriesList.get(i).isSelected())
@@ -473,8 +476,6 @@ public class EditProfileActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful())
                             {
-                                removeTrainerDataFromAllCategory();
-                                pushTrainerCategoryData();
                                 Toast.makeText(getApplicationContext(),"User profile updated successfully",Toast.LENGTH_LONG).show();
                                 finish();
                                 Intent i = new Intent(EditProfileActivity.this,ProfileActivity.class);
@@ -482,131 +483,13 @@ public class EditProfileActivity extends AppCompatActivity {
                             }
                     }
                 });
-    }
-
-    private void pushTrainerCategoryData()
-    {
-        for(int i=0;i<categoryNames.size();i++)
-        {
-            Query query = databaseReferenceCategories.orderByChild("categoryName").equalTo(categoryNames.get(i));
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if(dataSnapshot.exists())
-                    {
-                        //    Category category= dataSnapshot.getChildren().iterator().next().getValue(Category.class);
-                        pushTrainer(dataSnapshot);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(getApplicationContext(),""+databaseError.getMessage(),Toast.LENGTH_LONG).show();
-                }
-            });
-        }
-    }
-
-    private void pushTrainer(DataSnapshot dataSnapshot)
-    {
-        String key= dataSnapshot.getChildren().iterator().next().getKey();
-        TrainerId trainerId = new TrainerId(firebaseUser.getUid());
-        databaseReferenceCategories.child(key).child("TrainerId").child(firebaseUser.getUid()).setValue(trainerId);
-    }
-
-
-    private void removeTrainerDataFromAllCategory()
-    {
-        databaseReferenceCategories.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot dss:dataSnapshot.getChildren())
-                {
-                    if(dss.child("TrainerId").child(firebaseUser.getUid()).exists())
-                    {
-                        dss.child("TrainerId").child(firebaseUser.getUid()).getRef().setValue(null);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getApplicationContext(),""+databaseError.getMessage(),Toast.LENGTH_LONG).show();
-            }
-        });
-    }
 
 
 
 
-    private void updateCategoriesData()
-    {
-        for(int i=0;i<categoryNames.size();i++)
-        {
-            Query query = databaseReferenceCategories.orderByChild("categoryName").equalTo(categoryNames.get(i));
-            query.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists())
-                        {
-                            final String key= dataSnapshot.getChildren().iterator().next().getKey();
-
-                            databaseReferenceCategories.child(key).child("TrainerId").child(firebaseUser.getUid())
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                        if(!dataSnapshot.exists())
-                                        {
-                                            TrainerId trainerId = new TrainerId(firebaseUser.getUid());
-                                            databaseReferenceCategories.child(key).child("TrainerId").child(firebaseUser.getUid())
-                                                    .setValue(trainerId);
-                                        }
-                                        else
-                                        {
-
-                                            databaseReferenceCategories.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                  Category category = dataSnapshot.getValue(Category.class);
-                                                  if(!categoryNames.contains(category.getCategoryName()))
-                                                  {
-                                                      databaseReferenceCategories.child(key).child("TrainerId").child(firebaseUser.getUid())
-                                                              .removeValue();
-
-                                                  }
-
-                                                }
-
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                                }
-                                            });
-
-                                            databaseReferenceCategories.child(key).child("TrainerId").child(firebaseUser.getUid())
-                                                    .removeValue();
-
-                                        }
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                        Toast.makeText(getApplicationContext(),"error:"+databaseError.getMessage(),Toast.LENGTH_LONG).show();
-                                }
-                            });
 
 
 
-                        }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-        }
     }
 
     @Override

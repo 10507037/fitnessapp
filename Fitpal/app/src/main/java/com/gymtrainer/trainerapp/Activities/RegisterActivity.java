@@ -1,6 +1,5 @@
 package com.gymtrainer.trainerapp.Activities;
 
-import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -8,11 +7,9 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -174,17 +171,6 @@ ResultCallback{
 
     }
 
-
-    private boolean checkIfAlreadyhavePermission() {
-        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-        if (result == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
     private void setListeners()
     {
 
@@ -195,16 +181,6 @@ ResultCallback{
                 @Override
                 public void onClick(View v) {
                     progressBar.setVisibility(View.VISIBLE);
-
-                    // check if permission is granted or not
-                    int MyVersion = Build.VERSION.SDK_INT;
-                    if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
-                        if (!checkIfAlreadyhavePermission()) {
-                            requestForSpecificPermission();
-                        }
-                    }
-
-
                     client = new GoogleApiClient.Builder(v.getContext())
                             .addApi(LocationServices.API)
                             .addConnectionCallbacks(RegisterActivity.this)
@@ -405,10 +381,6 @@ ResultCallback{
         });
     }
 
-    private void requestForSpecificPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1012);
-    }
-
     public void registerTrainer()
     {
         int selectedId = radioGroupGender.getCheckedRadioButtonId();
@@ -496,12 +468,6 @@ ResultCallback{
             return;
         }
 
-        if(textViewFetchLocation.getText().toString().equals("Fetch Location"))
-        {
-            Toast.makeText(getApplicationContext(),"You must fetch your current location to register",Toast.LENGTH_LONG).show();
-            return;
-        }
-
         else
         {
 
@@ -524,11 +490,8 @@ ResultCallback{
                                 if(task.isSuccessful())
                                 {
                                     insertDatabase();
-                                }
-                                else
-                                {
-                                    Toast.makeText(getApplicationContext(),""+task.getException().getMessage(),Toast.LENGTH_LONG).show();
-                                    progressBar.setVisibility(View.GONE);
+
+
                                 }
                         }
                     });
@@ -548,7 +511,7 @@ ResultCallback{
             trail = "false";
         }
 
-        if(latLngCurrent!=null)
+        if(latLngCurrent!=null && !textViewFetchLocation.getText().toString().equals("Fetch Location"))
         {
             Trainer trainer = new Trainer(name,email,phonenumber,address,city,radioGenderButton.getText().toString(),trail,experience,description,rate,"https://firebasestorage.googleapis.com/v0/b/gym-trainer-app.appspot.com/o/ic_header_round.png?alt=media&token=e84a860f-706c-466c-8f2b-08db4202bf7e",firebaseUser.getUid(),String.valueOf(latLngCurrent.latitude),String.valueOf(latLngCurrent.longitude));
 
@@ -566,7 +529,6 @@ ResultCallback{
 
         else
         {
-            progressBar.setVisibility(View.GONE);
             Toast.makeText(getApplicationContext(),"Could not fetch your current Location. Please fetch your location",Toast.LENGTH_LONG).show();
         }
 
@@ -577,9 +539,6 @@ ResultCallback{
                 .child("Categories").setValue(selectedCategoriesList);
 
     }
-
-
-
     private void setWorkingHrs()
     {
         databaseReferenceTrainer.child(firebaseUser.getUid())
@@ -641,7 +600,7 @@ ResultCallback{
     {
         String key= dataSnapShot.getChildren().iterator().next().getKey();
         TrainerId trainerId = new TrainerId(firebaseUser.getUid());
-        databaseReferenceCategories.child(key).child("TrainerId").child(firebaseUser.getUid()).setValue(trainerId);
+        databaseReferenceCategories.child(key).child("TrainerId").push().setValue(trainerId);
     }
 
     public void gotoLogin()
@@ -703,6 +662,7 @@ ResultCallback{
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 
     public String getStringAddress(Double lat,Double lng)
@@ -745,6 +705,7 @@ ResultCallback{
                     // in onActivityResult().
 
                     status.startResolutionForResult(RegisterActivity.this, REQUEST_CHECK_SETTINGS);
+
                 } catch (IntentSender.SendIntentException e) {
 
                     //failed to show dialog
@@ -766,27 +727,14 @@ ResultCallback{
             if (resultCode == RESULT_OK) {
 
                 Toast.makeText(getApplicationContext(), "GPS enabled", Toast.LENGTH_LONG).show();
-            }
-            else {
-                Toast.makeText(getApplicationContext(), "You must enabled GPS to register.", Toast.LENGTH_LONG).show();
-                progressBar.setVisibility(View.GONE);
+            } else {
+
+                Toast.makeText(getApplicationContext(), "GPS is not enabled", Toast.LENGTH_LONG).show();
             }
 
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
-        {
-            
-            //granted
-        } else {
-            //not granted
-        }
-
-    }
 
     @Override
     protected void onDestroy() {

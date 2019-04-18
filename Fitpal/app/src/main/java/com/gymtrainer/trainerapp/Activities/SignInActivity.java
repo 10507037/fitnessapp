@@ -22,11 +22,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.gymtrainer.trainerapp.R;
 
 import java.util.List;
@@ -39,8 +34,6 @@ public class SignInActivity extends AppCompatActivity implements EasyPermissions
     TextInputEditText editTextEmail, editTextPassword;
     FirebaseAuth auth;
     ProgressBar progressBar;
-
-    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +50,6 @@ public class SignInActivity extends AppCompatActivity implements EasyPermissions
         editTextPassword = (TextInputEditText) findViewById(R.id.password_ed_login);
         auth = FirebaseAuth.getInstance();
         progressBar = (ProgressBar)findViewById(R.id.progressBarLogin);
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child("Trainers");
-
         String[] perms = {Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION};
         if(!EasyPermissions.hasPermissions(this,perms))
         {
@@ -143,38 +134,11 @@ public class SignInActivity extends AppCompatActivity implements EasyPermissions
                                 if(firebaseUser.isEmailVerified())
                                 {
                                     progressBar.setVisibility(View.GONE);
-
-                                    // CHECK IF trainer data exists or not....
-                                    // if trainer data exists then login otherwise print a message that the trainer does not exist.
-
-                                    databaseReference.child(firebaseUser.getUid())
-                                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                                @Override
-                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                    if(dataSnapshot.exists())
-                                                    {
-                                                        Toast.makeText(getApplicationContext(),"Logged in...",Toast.LENGTH_LONG).show();
-                                                        Intent intent=new Intent(SignInActivity.this,HomeActivity.class);
-                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                                                        startActivity(intent);
-                                                        finish();
-                                                    }
-                                                    else
-                                                    {
-                                                        Toast.makeText(getApplicationContext(),"A user is already registered with this email address.",Toast.LENGTH_LONG).show();
-                                                        auth.signOut();
-
-                                                    }
-                                                }
-
-                                                @Override
-                                                public void onCancelled(@NonNull DatabaseError databaseError) {
-                                                Toast.makeText(getApplicationContext(),""+databaseError.getMessage(),Toast.LENGTH_LONG).show();
-                                                }
-                                            });
-
-
-
+                                    Toast.makeText(getApplicationContext(),"Logged in...",Toast.LENGTH_LONG).show();
+                                    Intent intent=new Intent(SignInActivity.this,HomeActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                    startActivity(intent);
+                                    finish();
                                 }
                                 else
                                 {
@@ -232,8 +196,11 @@ public class SignInActivity extends AppCompatActivity implements EasyPermissions
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-
+            if(EasyPermissions.somePermissionPermanentlyDenied(this,perms))
+            {
                 new AppSettingsDialog.Builder(this).build().show();
+
+            }
     }
 
     @Override
