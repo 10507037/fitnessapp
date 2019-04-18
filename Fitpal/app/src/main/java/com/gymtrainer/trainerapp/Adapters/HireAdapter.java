@@ -17,9 +17,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-/**
- * Created by haroonpc on 3/27/2019.
- */
+
 
 public class HireAdapter extends RecyclerView.Adapter<HireAdapter.HireAdapterViewHolder>
 {

@@ -4,9 +4,6 @@ import com.gymtrainer.trainerapp.Models.WorkingHrs;
 
 import java.util.ArrayList;
 
-/**
- * Created by haroonpc on 3/21/2019.
- */
 
 public class Constants
 {

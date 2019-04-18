@@ -1,8 +1,6 @@
 package com.gymtrainer.trainerapp.Models;
 
-/**
- * Created by haroonpc on 3/14/2019.
- */
+
 
 public class TrainerId
 {

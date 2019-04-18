@@ -2,9 +2,7 @@ package com.gymtrainer.trainerapp.Models;
 
 import java.util.ArrayList;
 
-/**
- * Created by haroonpc on 3/14/2019.
- */
+
 
 public class User
 {

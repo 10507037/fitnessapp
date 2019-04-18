@@ -2,9 +2,7 @@ package com.gymtrainer.trainerapp.Models;
 
 import java.io.Serializable;
 
-/**
- * Created by haroonpc on 3/13/2019.
- */
+
 
 public class Trainer implements Serializable
 {

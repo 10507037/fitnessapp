@@ -1,8 +1,6 @@
 package com.gymtrainer.trainerapp.Models;
 
-/**
- * Created by haroonpc on 3/21/2019.
- */
+
 
 public class WorkingHrs
 {

@@ -12,9 +12,7 @@ import com.gymtrainer.trainerapp.R;
 
 import java.util.ArrayList;
 
-/**
- * Created by haroonpc on 3/14/2019.
- */
+
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.HomeAdapterViewHolder>
 {

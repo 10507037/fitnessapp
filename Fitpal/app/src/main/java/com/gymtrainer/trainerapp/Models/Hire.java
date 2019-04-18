@@ -3,9 +3,7 @@ package com.gymtrainer.trainerapp.Models;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by haroonpc on 3/25/2019.
- */
+
 
 public class Hire
 {

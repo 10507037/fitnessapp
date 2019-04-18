@@ -2,9 +2,7 @@ package com.gymtrainer.trainerapp.Models;
 
 import java.util.List;
 
-/**
- * Created by haroonpc on 3/14/2019.
- */
+
 
 public class Category
 {
