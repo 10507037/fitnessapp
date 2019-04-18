@@ -41,9 +41,9 @@ public class HireAdapter extends RecyclerView.Adapter<HireAdapter.HireAdapterVie
     @Override
     public void onBindViewHolder(@NonNull HireAdapterViewHolder holder, int i) {
         Hire hire = hireList.get(i);
-        holder.textViewName.setText(hire.getName());
+        holder.textViewName.setText(hire.getUserName());
         holder.textViewCategory.setText(hire.getCategoryName());
-        holder.textViewRate.setText(hire.getRate());
+        holder.textViewRate.setText(hire.getRate()+"$");
         Picasso.get().load(hire.getImageUrl()).placeholder(R.drawable.ic_launcher_man).into(holder.hiredImg);
     }
 
@@ -59,16 +59,16 @@ public class HireAdapter extends RecyclerView.Adapter<HireAdapter.HireAdapterVie
 
         public HireAdapterViewHolder(@NonNull View itemView) {
             super(itemView);
-            textViewName = (TextView)itemView.findViewById(R.id.hiredTrainerName);
-            hiredImg = (CircleImageView)itemView.findViewById(R.id.hiredTrainerImg);
-            textViewRate = (TextView)itemView.findViewById(R.id.hiredTrainerRate);
-            textViewCategory = (TextView)itemView.findViewById(R.id.hiredTrainerCategory);
+            textViewName = (TextView)itemView.findViewById(R.id.hiredUserName);
+            hiredImg = (CircleImageView)itemView.findViewById(R.id.hiredUsersImg);
+            textViewRate = (TextView)itemView.findViewById(R.id.hiredUserRate);
+            textViewCategory = (TextView)itemView.findViewById(R.id.hiredUsersCategoryName);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Hire hire = hireList.get(getAdapterPosition());
-                    ((HomeActivity)context).openNewActivity(hire.getTrainerId(),hire.getHourList(),hire.getCategoryName(),hire.getUserId(),hire.getDate());
+                    ((HomeActivity)context).openNewActivity(hire.getHourList(),hire.getCategoryName(),hire.getUserId(),hire.getDate());
 
                 }
             });

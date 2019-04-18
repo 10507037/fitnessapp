@@ -16,11 +16,13 @@
         android:elevation="4dp"
         >
     </android.support.v7.widget.Toolbar>
+
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewHome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/recyclerViewHome"
-        android:layout_below="@+id/toolbarHome">
+        android:layout_below="@+id/toolbarHome"
+        android:layout_marginTop="0dp">
 
     </android.support.v7.widget.RecyclerView>
 
