@@ -1,3 +1,5 @@
-Research on Firebase connectivity
-Design of user app research
-Watching various coding techniques in JAVA for User app to create  back end of User and Trainer app.
+Trainer App was successfully implemented with the following technologies:
+Firebase databse 
+Geo-Location enabled app
+OAUTH successfully done via E-mail
+
